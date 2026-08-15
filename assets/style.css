@@ -1,0 +1,1156 @@
+/* ─────────────────────────────────────────────
+   junaidirf.github.io
+   ───────────────────────────────────────────── */
+
+:root {
+  --bg:        #0a0a0c;
+  --panel:     #111114;
+  --panel-2:   #16161a;
+  --line:      rgba(255, 255, 255, 0.08);
+  --line-soft: rgba(255, 255, 255, 0.05);
+  --text:      #f2f0ec;
+  --muted:     #8e8d95;
+  --accent:    #ff5a36;
+
+  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+
+  --radius: 14px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* no CSS smooth-scroll — Lenis drives scrolling and the two fight each other */
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  /* kill the grey flash when tapping a card on Android; :active handles feedback */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* height:auto is load-bearing — the width/height attributes on the <img> tags are
+   presentation hints, and without this the height stops being auto, which makes
+   the browser ignore every aspect-ratio below and stretch images to full size. */
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; text-decoration: none; }
+
+::selection {
+  background: rgba(255, 90, 54, 0.28);
+  color: var(--text);
+}
+
+/* No border-radius here — it would flatten the 14px corners of a focused card.
+   Outlines follow the element's own radius automatically. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* headings shouldn't leave a single word stranded on the last line */
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+
+/* scrollbar, so the page edge doesn't flip to a bright system default */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a30 transparent;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: #2a2a30;
+  border-radius: 10px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover { background: #3a3a42; }
+
+/* Lenis's stopped state sets `overflow: clip` on <html> — right for locking the
+   page behind a modal, wrong here. During middle-click autoscroll we stop Lenis
+   only to hand scrolling over to the browser, so the page must stay scrollable;
+   without this the first middle-click just clipped the scrollbar away and the
+   autoscroll had nothing to move. Specificity (0,3,1) beats the Lenis rule. */
+html.lenis.lenis-stopped.native-scroll {
+  overflow: visible;
+}
+
+/* ── AMBIENT BACKGROUND ────────────────────────────────────────────
+   Warm light on near-black, and nothing else. An earlier version layered a dot
+   grid and a blue field on top of this and the result was busier and muddier
+   than the plain glow it replaced — so the colour stays in one family and the
+   texture stays out of the way.
+
+   Three fields drift on long, mismatched cycles so the composition never
+   visibly repeats. All transform/opacity, and deliberately no blur filters:
+   a radial-gradient is already soft, and a full-screen blur is the one thing
+   here that would cost real frames on a phone.
+   ───────────────────────────────────────────────── */
+.bg {
+  position: fixed;
+  inset: -30vh 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* the warm light recedes as you scroll, so it reads as belonging to the hero
+   and the lower sections stay calm */
+.bg-fields {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, var(--par, 0px), 0);
+}
+
+/* Mouse parallax lives on its own element: the fields underneath are busy
+   animating their own transforms, and two animations cannot share one. CSS
+   eases this, so pointermove only has to write a variable. */
+.bg-move {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(var(--mx, 0px), var(--my, 0px), 0);
+  transition: transform 0.9s cubic-bezier(0.22, 0.8, 0.24, 1);
+}
+
+.bg-field {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+/* the anchor: the same warm glow that sat behind the hero before, now breathing */
+.bg-field-1 {
+  width: 78vmax;
+  height: 62vmax;
+  left: 50%;
+  margin-left: -39vmax;
+  top: 32vh;
+  margin-top: -31vmax;
+  background: radial-gradient(circle, rgba(255, 90, 54, 0.115), rgba(255, 90, 54, 0.028) 46%, transparent 70%);
+  animation: field1 26s ease-in-out infinite alternate;
+}
+
+/* a deeper ember low and left, for depth rather than colour contrast */
+.bg-field-2 {
+  width: 54vmax;
+  height: 54vmax;
+  left: 14%;
+  margin-left: -27vmax;
+  top: 88vh;
+  margin-top: -27vmax;
+  background: radial-gradient(circle, rgba(255, 62, 28, 0.07), transparent 66%);
+  animation: field2 37s ease-in-out infinite alternate;
+}
+
+/* a small amber highlight that keeps the right side from going dead */
+.bg-field-3 {
+  width: 40vmax;
+  height: 40vmax;
+  right: 4%;
+  margin-right: -20vmax;
+  top: 54vh;
+  margin-top: -20vmax;
+  background: radial-gradient(circle, rgba(255, 150, 70, 0.045), transparent 64%);
+  animation: field3 31s ease-in-out infinite alternate;
+}
+
+@keyframes field1 {
+  from { transform: translate3d(-4vmax, -2vmax, 0) scale(1); }
+  to   { transform: translate3d(4vmax,  2vmax, 0) scale(1.12); }
+}
+
+@keyframes field2 {
+  from { transform: translate3d(0, 0, 0) scale(1.08); }
+  to   { transform: translate3d(6vmax, -5vmax, 0) scale(0.92); }
+}
+
+@keyframes field3 {
+  from { transform: translate3d(2vmax, 3vmax, 0) scale(0.95); }
+  to   { transform: translate3d(-5vmax, -3vmax, 0) scale(1.1); }
+}
+
+/* Rotated squares, placed deliberately around the edges so the middle of the
+   screen — where the hero and links sit — stays clean. Positions and timings are
+   inline on each element so the composition is readable in the markup rather than
+   buried in a dozen near-identical rules.
+
+   They lean a little further than the light fields on pointer move, which is what
+   separates them into a nearer plane instead of a flat sheet of decoration. */
+.bg-shapes {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(calc(var(--mx, 0px) * 1.1), calc(var(--my, 0px) * 1.1), 0);
+}
+
+/* Three depth planes. Each drifts at its own rate for the whole length of the
+   page, which is what stops the shapes reading as a fixed pattern that only
+   twitches near the top. Nearer planes are larger and move most. */
+.dmd-layer {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(0, calc(-1 * var(--sy, 0px) * var(--depth, 0.04)), 0);
+  will-change: transform;    /* three promoted layers, not twelve */
+}
+
+/* Every shape gets its own three waypoints and rotation sweep from inline custom
+   properties, so one keyframe produces twelve different paths — no two move alike,
+   and negative delays start each one mid-loop so nothing shares a rhythm.
+
+   Three waypoints on a closed loop with linear timing, rather than two points
+   easing back and forth: a two-point sweep spends most of its time slowing down
+   or speeding up at the ends, which at these durations looked like nothing was
+   moving at all. */
+.dmd {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--s);
+  height: var(--s);
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 4px;                   /* softened corners read less like clip-art */
+  animation: tumble var(--t, 20s) linear var(--d, 0s) infinite;
+}
+
+/* the darker ones only really show where they cross the warm light, which is
+   what keeps them from looking pasted on */
+.dmd.dark {
+  border-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+@keyframes tumble {
+  0%   { transform: translate3d(var(--ax, 0px), var(--ay, 0px), 0) rotate(var(--r1, 45deg)); }
+  33%  { transform: translate3d(var(--bx, 0px), var(--by, 0px), 0) rotate(var(--r2, 52deg)); }
+  66%  { transform: translate3d(var(--cx, 0px), var(--cy, 0px), 0) rotate(var(--r3, 38deg)); }
+  100% { transform: translate3d(var(--ax, 0px), var(--ay, 0px), 0) rotate(var(--r1, 45deg)); }
+}
+
+/* just enough grain to stop the gradients banding on a dark screen */
+.bg-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+
+/* ── INTRO ──────────────────────────────────────
+   Hero + links own the first screen. min-height (not height) so that on short
+   viewports the block simply grows and scrolls instead of clipping the links.
+   svh tracks the *small* viewport height, so mobile browser toolbars sliding
+   in and out can't crop the bottom row.
+   ─────────────────────────────────────────────── */
+.intro {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;          /* fallback for browsers without svh */
+  min-height: 100svh;
+  /* Weighted rather than symmetric: sitting the block a little below centre
+     shortens the dead space between the last link and the fold, so less empty
+     scrolling separates the links from the work section. */
+  padding: clamp(40px, 12vh, 150px) 0 clamp(52px, 7vh, 78px);
+}
+
+.intro .hero { margin-bottom: clamp(28px, 5vh, 56px); }
+.intro .section { margin-bottom: 0; }
+
+/* ── SCROLL CUE ─────────────────────────────────
+   Sits inside the intro's bottom padding band, so it can never collide with
+   the links even when the content outgrows the viewport.
+   ─────────────────────────────────────────────── */
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(16px, 3vh, 32px);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0.75;
+  transition: opacity 0.18s ease, color 0.18s ease;
+}
+
+.scroll-cue:hover {
+  opacity: 1;
+  color: var(--text);
+}
+
+.scroll-cue svg {
+  width: 16px;
+  height: 16px;
+  animation: nudge 2.4s ease-in-out infinite;
+}
+
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(4px); }
+}
+
+/* ── HERO ───────────────────────────────────── */
+/* Top-aligned, not centred: centring the avatar against the whole text block
+   (heading + role + a three-line bio) left the name floating above it with
+   nothing alongside. Aligned to the top, the avatar and the name read as one
+   unit. The nudge offsets the heading's leading so the two line up optically
+   rather than mathematically. */
+.hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+.hero .avatar { margin-top: 4px; }
+
+.avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  object-fit: cover;
+}
+
+.hero h1 {
+  font-size: clamp(1.9rem, 6vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+/* The handle sits inside the h1 rather than on its own line: someone arriving
+   from X knows JunaidIRF, someone arriving from LinkedIn knows Junaid Irfan, and
+   this ties the two on sight. Inline costs no vertical space, which the intro
+   cannot spare on a phone. Sized in em so it tracks the heading's clamp. */
+.handle {
+  display: inline-block;
+  margin-left: 0.34em;
+  font-family: var(--mono);
+  font-size: 0.4em;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--muted);
+  vertical-align: middle;
+  transform: translateY(-0.12em);
+}
+
+.role {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  margin-top: 6px;
+}
+
+.bio {
+  color: var(--muted);
+  margin-top: 12px;
+  max-width: 54ch;
+}
+
+.bio a {
+  color: var(--text);
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 1px;
+  transition: color 0.18s ease;
+}
+
+.bio a:hover { color: var(--accent); }
+
+/* ── SECTIONS ───────────────────────────────── */
+.section { margin-bottom: 60px; }
+
+.section-title {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* ── LINKS ──────────────────────────────────── */
+.links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.link:hover {
+  border-color: color-mix(in srgb, var(--brand) 55%, transparent);
+  background: var(--panel-2);
+  transform: translateY(-2px);
+}
+
+/* brand marks are inline SVG (no CDN) so they inherit currentColor */
+.icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  fill: currentColor;
+  color: var(--muted);
+  transition: color 0.18s ease;
+}
+
+.link:hover .icon { color: var(--brand); }
+
+/* Brand marks are solid shapes, but a few icons (mail) are drawn with strokes.
+   CSS beats the SVG's own fill="none", so filling those would render a blob. */
+.icon[stroke] { fill: none; }
+
+.link-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+  min-width: 0;
+}
+
+.link-text strong {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.link-text span {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.arrow {
+  margin-left: auto;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--muted);
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.link:hover .arrow,
+.link:focus-visible .arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* ── FEATURED ───────────────────────────────── */
+.featured {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 26px;
+}
+
+.featured-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(255, 90, 54, 0.1);
+  border: 1px solid rgba(255, 90, 54, 0.25);
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin-bottom: 10px;
+}
+
+.featured h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.featured-tag {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #14100e;
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 11px 20px;
+  border-radius: 10px;
+  white-space: nowrap;
+  transition: filter 0.18s ease, transform 0.18s ease;
+}
+
+.cta:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+}
+
+/* the little "go" arrow shared by the CTA and the highlight link */
+.go {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  transition: transform 0.18s ease;
+}
+
+.cta:hover .go { transform: translateX(3px); }
+
+.featured-desc {
+  color: var(--muted);
+  margin-top: 16px;
+  max-width: 64ch;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.gallery figure {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+}
+
+.gallery img,
+.gallery video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.gallery figcaption {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  padding: 7px 10px;
+  border-top: 1px solid var(--line-soft);
+  background: var(--panel-2);
+}
+
+.controls {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.controls-label {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+
+.controls ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 12px;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.controls li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+kbd {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--text);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  padding: 2px 7px;
+}
+
+/* ── HIGHLIGHT CARD ─────────────────────────── */
+.highlight {
+  display: block;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  transition: border-color 0.18s ease, transform 0.18s ease;
+}
+
+.highlight:hover {
+  border-color: rgba(255, 90, 54, 0.4);
+  transform: translateY(-2px);
+}
+
+.highlight-media {
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background: #0d1620;
+}
+
+.highlight-media img {
+  width: 100%;
+  aspect-ratio: 1400 / 454;
+  object-fit: cover;
+  object-position: left center;
+  transition: transform 0.4s ease;
+}
+
+.highlight:hover .highlight-media img { transform: scale(1.02); }
+
+.highlight-body { padding: 22px 24px 24px; }
+
+.pin {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  color: #b9bcff;
+  background: rgba(88, 101, 242, 0.12);
+  border: 1px solid rgba(88, 101, 242, 0.3);
+  border-radius: 999px;
+  padding: 4px 12px 4px 10px;
+  margin-bottom: 12px;
+}
+
+.pin .icon {
+  width: 14px;
+  height: 14px;
+  color: inherit;
+}
+
+.highlight h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  transition: color 0.18s ease;
+}
+
+.highlight:hover h3 { color: var(--accent); }
+
+.highlight p {
+  font-size: 0.92rem;
+  color: var(--muted);
+  max-width: 66ch;
+}
+
+.link-out {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+
+.highlight:hover .link-out .go { transform: translateX(4px); }
+
+/* ── PROJECT GRID ───────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+a.card:hover {
+  border-color: rgba(255, 90, 54, 0.4);
+  background: var(--panel-2);
+  transform: translateY(-2px);
+}
+
+.card-media {
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background: #000;
+}
+
+.card-media img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.4s ease;
+}
+
+a.card:hover .card-media img { transform: scale(1.04); }
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 8px;
+  padding: 18px 20px 20px;
+}
+
+.card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card h3 {
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+a.card:hover h3 { color: var(--accent); }
+
+.tech {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.card p {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.card p a {
+  color: var(--text);
+  border-bottom: 1px solid var(--line);
+}
+
+.card p a:hover { border-color: var(--accent); }
+
+.wip {
+  align-self: flex-start;
+  margin-top: auto;
+  font-family: var(--mono);
+  font-size: 0.63rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 9px;
+}
+
+/* ── STACK ──────────────────────────────────── */
+.stack {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+}
+
+.stack dt {
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  color: var(--muted);
+  padding: 11px 0;
+  border-top: 1px solid var(--line-soft);
+}
+
+.stack dd {
+  font-size: 0.9rem;
+  padding: 11px 0;
+  border-top: 1px solid var(--line-soft);
+}
+
+.stack dt:first-of-type,
+.stack dd:first-of-type { border-top: none; }
+
+/* ── CONTACT ────────────────────────────────── */
+.contact-section { margin-top: 84px; }
+
+.contact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+  padding: 34px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  /* a last warm glow, echoing the one behind the hero */
+  background-image: radial-gradient(120% 140% at 0% 0%, rgba(255, 90, 54, 0.09), transparent 58%);
+}
+
+.open-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: #7ee2a8;
+  background: rgba(61, 220, 132, 0.1);
+  border: 1px solid rgba(61, 220, 132, 0.28);
+  border-radius: 999px;
+  padding: 4px 12px 4px 10px;
+  margin-bottom: 16px;
+}
+
+.open-badge .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3ddc84;
+  box-shadow: 0 0 0 0 rgba(61, 220, 132, 0.55);
+  animation: available 2.6s ease-out infinite;
+}
+
+@keyframes available {
+  0%        { box-shadow: 0 0 0 0 rgba(61, 220, 132, 0.5); }
+  70%, 100% { box-shadow: 0 0 0 7px rgba(61, 220, 132, 0); }
+}
+
+.contact-lead h3 {
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.contact-lead p {
+  color: var(--muted);
+  font-size: 0.93rem;
+  margin-top: 12px;
+  max-width: 42ch;
+}
+
+.contact-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* same shape as the link cards, but usable as a <button> too */
+.method {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  padding: 13px 15px;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.method:hover {
+  border-color: rgba(255, 90, 54, 0.4);
+  background: var(--panel-2);
+  transform: translateY(-2px);
+}
+
+.method:active { transform: translateY(0) scale(0.995); transition-duration: 0.06s; }
+
+.method .icon { color: var(--muted); }
+.method:hover .icon { color: var(--text); }
+
+.method-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+  min-width: 0;
+}
+
+.method-text strong { font-weight: 600; font-size: 0.93rem; }
+
+.method-text span {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.arrow-go {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--muted);
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.method:hover .arrow-go,
+.method:focus-visible .arrow-go { opacity: 1; transform: translate(0, 0); }
+
+/* Discord has no profile URL to link to, so the username is copied instead */
+.copy-state {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: var(--muted);
+  display: flex;
+}
+
+.copy-state svg { width: 15px; height: 15px; }
+
+.i-check { display: none; }
+.method.copied .i-copy { display: none; }
+.method.copied .i-check { display: block; color: #3ddc84; }
+.method.copied { border-color: rgba(61, 220, 132, 0.45); }
+
+/* ── FOOTER ─────────────────────────────────── */
+.footer {
+  margin-top: 72px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.footer-links a {
+  color: var(--text);
+  border-bottom: 1px solid var(--line);
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+
+.footer-links a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ── PRESS STATES ───────────────────────────────
+   Hover does nothing on a touchscreen, so every tappable surface gets a press
+   state as well. Short duration so it feels immediate rather than laggy.
+   ─────────────────────────────────────────────── */
+.link:active,
+a.card:active,
+.highlight:active {
+  transform: translateY(0) scale(0.995);
+  transition-duration: 0.06s;
+}
+
+.cta:active {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 0.06s;
+}
+
+.scroll-cue:active { opacity: 1; }
+
+/* keep an anchored landing clear of the very top edge */
+#work { scroll-margin-top: 24px; }
+
+/* ── RESPONSIVE ─────────────────────────────── */
+@media (max-width: 700px) {
+  .wrap { padding: 0 18px 48px; }
+
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .avatar { width: 72px; height: 72px; }
+  .hero .avatar { margin-top: 0; }        /* stacked on a phone; no optical offset needed */
+
+  .section { margin-bottom: 48px; }
+
+  /* Six stacked two-line cards plus the hero overflow a phone screen, so the
+     rows collapse to a single compact line — name and handle side by side. */
+  .link { padding: 12px 14px; gap: 12px; }
+
+  .link-text {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .link-text strong { flex-shrink: 0; }
+
+  .icon { width: 20px; height: 20px; }
+
+  /* the corner arrow only ever appears on hover, which phones don't have */
+  .arrow { display: none; }
+
+  .featured { padding: 20px; }
+
+  .cta { width: 100%; justify-content: center; }
+
+  .gallery { grid-template-columns: 1fr; }
+
+  .gallery img,
+  .gallery video { aspect-ratio: 16 / 9; }
+
+  /* the banner is ~3:1, far too thin on a phone — crop to the interesting left half */
+  .highlight-media img { aspect-ratio: 16 / 9; }
+
+  .highlight-body { padding: 20px 18px 22px; }
+
+  .pin {
+    font-size: 0.63rem;
+    line-height: 1.4;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .pin .icon { margin-top: 2px; }
+
+  .stack { grid-template-columns: 1fr; }
+
+  .stack dt { padding-bottom: 0; border-top: 1px solid var(--line-soft); }
+  .stack dd { padding-top: 2px; border-top: none; }
+  .stack dd:first-of-type { border-top: none; }
+
+  /* tighter breathing room so the six links still clear the fold on a phone */
+  .intro { padding: clamp(32px, 6vh, 60px) 0 clamp(52px, 8vh, 80px); }
+  .intro .hero { margin-bottom: clamp(24px, 4vh, 40px); }
+
+  /* Fewer, smaller shapes on a phone — the same count reads as clutter there.
+     Sized off the custom property, not transform: the tumble animation owns
+     transform and would override a scale() declared here. */
+  .dmd {
+    width: calc(var(--s) * 0.6);
+    height: calc(var(--s) * 0.6);
+  }
+
+  .dmd:nth-child(even) { display: none; }   /* six on a phone, not twelve */
+
+  .contact-section { margin-top: 56px; }
+
+  .contact {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 22px 18px;
+  }
+}
+
+/* Phone screens: the six links plus the hero are a tight fit in one screen, so
+   spacing tightens as the viewport gets shorter. Measured against 360x800,
+   390x844 and 412x915 — the aim is all six links plus the cue above the fold. */
+@media (max-width: 700px) and (max-height: 880px) {
+  .intro { padding: clamp(28px, 5vh, 52px) 0 clamp(46px, 7vh, 68px); }
+  .intro .hero { margin-bottom: clamp(20px, 3.5vh, 34px); }
+  .link { padding: 11px 14px; }
+  .section-title { margin-bottom: 14px; }
+}
+
+/* Small or older phones (360x640 and friends): compact the hero further rather
+   than let the last links slip below the fold. */
+@media (max-width: 700px) and (max-height: 700px) {
+  .intro { padding: 20px 0 24px; }
+  .avatar { width: 58px; height: 58px; }
+  .hero { gap: 12px; }
+  .bio { font-size: 0.85rem; line-height: 1.5; }
+  .link { padding: 9px 13px; }
+  .links { gap: 9px; }
+
+  /* There is no spare room to reserve down here, and an absolutely positioned
+     cue would sit on top of the last link. Put it back in the flow instead. */
+  .scroll-cue {
+    position: static;
+    transform: none;
+    margin: 16px auto 0;
+  }
+}
+
+/* Landscape phones and short windows: a full-height intro would just push the
+   links off-screen, so drop the constraint and let the page flow normally. */
+@media (max-height: 520px) {
+  .intro {
+    min-height: 0;
+    padding: 40px 0;
+    justify-content: flex-start;
+  }
+
+  .scroll-cue { display: none; }
+}
+
+/* ── MOTION ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;   /* stop the cue looping */
+  }
+}

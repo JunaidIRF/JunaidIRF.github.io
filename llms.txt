@@ -1,0 +1,38 @@
+# Junaid Irfan
+
+> Software & Game developer, 3D modeler & animator, and modder. CS student
+> working with C#, C++, Python and Unity — building everything from backend APIs
+> and desktop apps to full 3D games with self-made assets. Side hobby:
+> reverse-engineering software and games for custom mods.
+
+Site: https://junaidirf.github.io/ — a single page covering links, work and contact.
+Handle: JunaidIRF.
+
+## Released
+
+- [ExecuDunk](https://junaidirf.itch.io/execudunk): Endless roguelike built in Unity. Grab, execute and dunk enemies into hoops; difficulty climbs each in-game day while you spend coins on dunk upgrades and items. Parry attacks and bullets, take on a boss quest for a pistol, or gamble the coins.
+
+## Projects
+
+- [TABG DirectConnect](https://github.com/JunaidIRF/TABG-DirectConnect-Plugin): BepInEx plugin (C#) for Totally Accurate Battlegrounds adding direct IP:Port server connection and a community server browser with live status. Pinned in Landfall's official TABG Discord in #tabg-community-servers.
+- [Die to Possess](https://x.com/JunaidIRF_/status/2087893710461649375): Work-in-progress Unity game where you possess the enemy that kills you; possession chance rises per kill plus a bonus scaled to the max health gap.
+- [Unity x Discord Bridge](https://youtu.be/jOIG_oBZPb4): Real-time bridge between a Discord bot and Unity over localhost, piping messages and images across as base64 to render in-engine.
+- [PlayLAN](https://github.com/JunaidIRF/PlayLAN-hub): Work-in-progress virtual LAN tunnelling (C++) for playing LAN games over the internet, with a game hub fed by a public JSON repo.
+- TABG Map Editor: Work-in-progress Unity map editor for TABG with a 4800+ item object browser, collider/rigidbody inspector and import/export.
+- [UIPorter](https://github.com/JunaidIRF/UIPorter): Java tool converting UI code between frameworks into their native languages, with an AI-assisted mode.
+- [WordGuesser](https://github.com/JunaidIRF/WordGuesser): C++/WinForms pattern-based word puzzle game with leaderboard and accounts. First place at a university project exhibition.
+- [FreeSiegeLauncher](https://github.com/JunaidIRF/FreeSiegeLauncher): C# launcher built on a modified DepotDownloader for pulling legacy Rainbow Six Siege builds.
+- [EASE EGM-110 Driver](https://github.com/JunaidIRF/EASE-EGM-110-Gaming-Mouse-Driver): Reverse-engineered the 825F chip driver to unlock 1000 Hz polling, programmable buttons, onboard DPI profiles and RGB control.
+
+## Links
+
+- [GitHub](https://github.com/JunaidIRF)
+- [itch.io](https://junaidirf.itch.io/)
+- [YouTube](https://www.youtube.com/@junaidirf3)
+- [X](https://x.com/JunaidIRF_)
+- [LinkedIn](https://www.linkedin.com/in/junaid-irfan/)
+- [Discord server](https://discord.com/invite/4mBqbEWaFB)
+
+## Contact
+
+Open to work and commissions. Email junaidirf005@gmail.com, or Discord username `junaidirf`.
