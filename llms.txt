@@ -14,7 +14,7 @@ Handle: JunaidIRF.
 
 ## Projects
 
-- [TABG DirectConnect](https://github.com/JunaidIRF/TABG-DirectConnect-Plugin): BepInEx plugin (C#) for Totally Accurate Battlegrounds adding direct IP:Port server connection and a community server browser with live status. Pinned in Landfall's official TABG Discord in #tabg-community-servers.
+- [TABG DirectConnect](https://github.com/JunaidIRF/TABG-DirectConnect-Plugin): BepInEx plugin (C#) for Totally Accurate Battlegrounds adding direct IP:Port connections, so players can join custom lobbies without going through matchmaking. Pinned in Landfall's official TABG Discord in #tabg-community-servers.
 - [Die to Possess](https://x.com/JunaidIRF_/status/2087893710461649375): Work-in-progress Unity game where you possess the enemy that kills you; possession chance rises per kill plus a bonus scaled to the max health gap.
 - [Unity x Discord Bridge](https://youtu.be/jOIG_oBZPb4): Real-time bridge between a Discord bot and Unity over localhost, piping messages and images across as base64 to render in-engine.
 - [PlayLAN](https://github.com/JunaidIRF/PlayLAN-hub): Work-in-progress virtual LAN tunnelling (C++) for playing LAN games over the internet, with a game hub fed by a public JSON repo.
