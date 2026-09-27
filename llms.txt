@@ -1,38 +1,51 @@
 # Junaid Irfan
 
-> Software & Game developer, 3D modeler & animator, and modder. CS student
-> working with C#, C++, Python and Unity — building everything from backend APIs
-> and desktop apps to full 3D games with self-made assets. Side hobby:
-> reverse-engineering software and games for custom mods.
+> Software & Game Developer, 3D Modeler & Animator, and Modder / Reverse Engineer. CS student working with C#, C++, Python, and Unity — building everything from backend APIs and native desktop applications to full 3D games with self-made assets. Available for freelance contracts and commissions on Upwork.
 
-Site: https://junaidirf.github.io/ — a single page covering links, work and contact.
+Site: https://junaidirf.github.io/ — Main portfolio covering projects, links, and contact.
+Upwork Portfolio: https://junaidirf.github.io/upwork.html — Upwork-compliant version without direct off-platform contact info.
 Handle: JunaidIRF.
+Location: Pakistan (UTC+5).
+
+## Services & Core Skills
+
+- **Game Development (Unity, C#)**: Full-cycle game development, combat and movement mechanics, procedural generation, roguelike systems, performance optimization, and custom shaders.
+- **3D Modeling & Animation (Blender)**: Self-made low-poly and stylized 3D assets, character modeling, texturing, rigging, weapon models, and fluid animation cycles.
+- **Desktop Software & Tools (C++, C#, Python)**: Native Windows desktop applications, GUI utilities (WinForms/WPF), multi-threaded systems, automation scripts, and custom launchers.
+- **Reverse Engineering & Modding**: Game modding via BepInEx (C#), binary disassembly and analysis, packet inspection, and custom hardware driver reverse engineering.
+- **Networking & Sockets**: Socket programming, P2P network tunneling, virtual LAN emulation, and real-time IPC bridges (e.g., Discord bot to Unity engine).
 
 ## Released
 
-- [ExecuDunk](https://junaidirf.itch.io/execudunk): Endless roguelike built in Unity. Grab, execute and dunk enemies into hoops; difficulty climbs each in-game day while you spend coins on dunk upgrades and items. Parry attacks and bullets, take on a boss quest for a pistol, or gamble the coins.
+- [ExecuDunk](https://junaidirf.itch.io/execudunk): Endless action roguelike built in Unity. Grab, execute, and dunk enemies into hoops; difficulty scales each in-game day while spending coins on dunk upgrades, weapons, and items. Features parry mechanics, boss quests, bullet deflection, and gambling minigames.
 
 ## Projects
 
-- [TABG DirectConnect](https://github.com/JunaidIRF/TABG-DirectConnect-Plugin): BepInEx plugin (C#) for Totally Accurate Battlegrounds adding direct IP:Port connections, so players can join custom lobbies without going through matchmaking. Pinned in Landfall's official TABG Discord in #tabg-community-servers.
-- [Die to Possess](https://x.com/JunaidIRF_/status/2087893710461649375): Work-in-progress Unity game where you possess the enemy that kills you; possession chance rises per kill plus a bonus scaled to the max health gap.
-- [Unity x Discord Bridge](https://youtu.be/jOIG_oBZPb4): Real-time bridge between a Discord bot and Unity over localhost, piping messages and images across as base64 to render in-engine.
-- [PlayLAN](https://github.com/JunaidIRF/PlayLAN-hub): Work-in-progress virtual LAN tunnelling (C++) for playing LAN games over the internet, with a game hub fed by a public JSON repo.
-- TABG Map Editor: Work-in-progress Unity map editor for TABG with a 4800+ item object browser, collider/rigidbody inspector and import/export.
-- [UIPorter](https://github.com/JunaidIRF/UIPorter): Java tool converting UI code between frameworks into their native languages, with an AI-assisted mode.
-- [WordGuesser](https://github.com/JunaidIRF/WordGuesser): C++/WinForms pattern-based word puzzle game with leaderboard and accounts. First place at a university project exhibition.
-- [FreeSiegeLauncher](https://github.com/JunaidIRF/FreeSiegeLauncher): C# launcher built on a modified DepotDownloader for pulling legacy Rainbow Six Siege builds.
-- [EASE EGM-110 Driver](https://github.com/JunaidIRF/EASE-EGM-110-Gaming-Mouse-Driver): Reverse-engineered the 825F chip driver to unlock 1000 Hz polling, programmable buttons, onboard DPI profiles and RGB control.
+- [TABG DirectConnect](https://github.com/JunaidIRF/TABG-DirectConnect-Plugin): BepInEx plugin (C#) for Totally Accurate Battlegrounds adding direct IP:Port connections, allowing players to connect to custom lobbies without matchmaking. Pinned in Landfall's official TABG Discord server in `#tabg-community-servers`.
+- [Die to Possess](https://x.com/JunaidIRF_/status/2087893710461649375): Work-in-progress Unity action game where you possess the enemy that eliminates you; possession chance increases per kill with scaling bonuses based on max health differences.
+- [Unity x Discord Bridge](https://youtu.be/jOIG_oBZPb4): Real-time IPC bridge connecting a Discord bot to Unity over localhost, piping messages and images across as base64 to render directly inside the game engine.
+- [PlayLAN](https://github.com/JunaidIRF/PlayLAN): Virtual LAN tunneling software (C++) for playing LAN games over the internet with low latency, featuring an adapter setup and a game hub fed by a public JSON repository.
+- TABG Map Editor: Unity-based map editor for TABG featuring a 4800+ item object browser, live collider/rigidbody inspection, and full scene import/export.
+- [UIPorter](https://github.com/JunaidIRF/UIPorter): Java cross-framework tool converting UI definitions between frameworks into their native target languages, featuring an AI-assisted translation mode.
+- [WordGuesser](https://github.com/JunaidIRF/WordGuesser): C++/WinForms pattern-based word puzzle game with user accounts and leaderboards. Awarded 1st place at a university project exhibition.
+- [FreeSiegeLauncher](https://github.com/JunaidIRF/FreeSiegeLauncher): C# desktop launcher built on a custom DepotDownloader fork for downloading and launching legacy Rainbow Six Siege builds.
+- [EASE EGM-110 Driver](https://github.com/JunaidIRF/EASE-EGM-110-Gaming-Mouse-Driver): Reverse-engineered peripheral driver for the 825F sensor chip, unlocking 1000 Hz polling rate, macro keys, onboard DPI profiles, and RGB lighting control.
 
-## Links
+## Links & Profiles
 
-- [GitHub](https://github.com/JunaidIRF)
-- [itch.io](https://junaidirf.itch.io/)
-- [YouTube](https://www.youtube.com/@junaidirf3)
-- [X](https://x.com/JunaidIRF_)
-- [LinkedIn](https://www.linkedin.com/in/junaid-irfan/)
-- [Discord server](https://discord.com/invite/4mBqbEWaFB)
+- [Upwork](https://www.upwork.com/freelancers/~01f4a25e09d79822b4): Official freelance profile for contract work, milestones, and hiring.
+- [GitHub](https://github.com/JunaidIRF): Open-source repositories, plugins, game utilities, and code samples.
+- [itch.io](https://junaidirf.itch.io/): Playable game releases, demos, and game jams.
+- [YouTube](https://www.youtube.com/@junaidirf3): Devlogs, project demos, and gameplay showcases.
+- [X (Twitter)](https://x.com/JunaidIRF_): Development clips, work-in-progress updates, and tech thoughts.
+- [LinkedIn](https://www.linkedin.com/in/junaid-irfan/): Professional background, education, and career experience.
+- [Instagram](https://www.instagram.com/junaidirf_): 3D art, renders, game clips, and behind-the-scenes dev content.
+- [Discord Community](https://discord.com/invite/4mBqbEWaFB): Community server for project discussions, mod support, and game updates.
 
-## Contact
+## Contact & Hiring
 
-Open to work and commissions. Email junaidirf005@gmail.com, or Discord username `junaidirf`.
+- **Hire on Upwork**: Available for fixed-price contracts and hourly freelance work via [Upwork Profile](https://www.upwork.com/freelancers/~01f4a25e09d79822b4).
+- **Direct Inquiries**: Open for contract work, commissions, and collaborations. Email `junaidirf005@gmail.com` or reach out on Discord (`junaidirf`).
+- **Portfolio Options**:
+  - Full Portfolio: https://junaidirf.github.io/
+  - Upwork-Compliant Portfolio: https://junaidirf.github.io/upwork.html
